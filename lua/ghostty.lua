@@ -3,15 +3,18 @@ local M = {}
 ---@class (exact) Options
 ---@field file_pattern? string The pattern to match the file name. If the file name matches the pattern, ghostty.nvim will run on save in that buffer.
 ---@field ghostty_cmd? string The ghostty executable to run.
+---@field check_timeout? number The timeout in milliseconds for the check command. If the command takes longer than this it will be killed.
 
 ---@class (exact) OptionsStrict : Options
 ---@field file_pattern string
 ---@field ghostty_cmd string
+---@field check_timeout number
 
 ---@type OptionsStrict
 local default_config = {
     file_pattern = "*/ghostty/config",
     ghostty_cmd = "ghostty",
+    check_timeout = 1000,
 }
 
 ---@param msg string
@@ -55,14 +58,14 @@ local function find_pattern(lines, pattern)
     return nil, nil
 end
 
-local ns_id = vim.api.nvim_create_namespace("ghostty.nvim")
-
 ---@param opts OptionsStrict
 ---@param event any
 local function validate_config(opts, event)
     local buf_lines = vim.api.nvim_buf_get_lines(event.buf, 0, -1, false)
-    local obj = vim.system({ opts.ghostty_cmd, "+validate-config" }, { text = true }):wait(1000)
+    local obj = vim.system({ opts.ghostty_cmd, "+validate-config" }, { text = true })
+        :wait(opts.check_timeout)
 
+    local ns_id = vim.api.nvim_create_namespace("ghostty.nvim")
     if obj.code == 0 then
         vim.diagnostic.reset(ns_id, event.buf)
         return
