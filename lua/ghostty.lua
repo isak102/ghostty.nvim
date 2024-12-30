@@ -96,7 +96,7 @@ end
 
 ---@param opts OptionsStrict
 local function setup_autocmds(opts)
-    vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    vim.api.nvim_create_autocmd({ "BufWritePost", "BufRead" }, {
         group = vim.api.nvim_create_augroup("ghostty.nvim", { clear = true }),
         pattern = opts.file_pattern,
         callback = function(event)
