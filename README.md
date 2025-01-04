@@ -29,8 +29,10 @@ The following is the default configuration, and can be passed into the `setup()`
 
 ```lua
 {
-    -- The pattern to match the file name. If the file name matches the
-    -- pattern, ghostty.nvim will run on save in that buffer.
+    -- The autocmd pattern matched against the filename of the buffer. If this pattern
+    -- matches, ghostty.nvim will run on save in that buffer. This pattern is passed to
+    -- nvim_create_autocmd, check `:h autocmd-pattern` for more information. Can be
+    -- either a string or a list of strings
     file_pattern = "*/ghostty/config",
     -- The ghostty executable to run.
     ghostty_cmd = "ghostty",

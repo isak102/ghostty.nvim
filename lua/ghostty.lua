@@ -1,12 +1,12 @@
 local M = {}
 
 ---@class (exact) Options
----@field file_pattern? string The pattern to match the file name. If the file name matches the pattern, ghostty.nvim will run on save in that buffer.
+---@field file_pattern? string|string[] The autocmd-pattern to match the file name. If the file name matches the pattern, ghostty.nvim will run on save in that buffer. This is passed to nvim_create_autocmd, check `:h autocmd-pattern` for more information.
 ---@field ghostty_cmd? string The ghostty executable to run.
 ---@field check_timeout? number The timeout in milliseconds for the check command. If the command takes longer than this it will be killed.
 
 ---@class (exact) OptionsStrict : Options
----@field file_pattern string
+---@field file_pattern string|string[]
 ---@field ghostty_cmd string
 ---@field check_timeout number
 
